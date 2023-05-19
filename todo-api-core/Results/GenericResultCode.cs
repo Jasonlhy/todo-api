@@ -1,6 +1,6 @@
-﻿namespace todo_api.Services.Responses;
+﻿namespace JasonTodoCore.Results;
 
-public static class GenericErrorCode
+public static class GenericResultCode
 {
     public const int NotFound = 404;
     public const int DbUpdateFailed = 404;

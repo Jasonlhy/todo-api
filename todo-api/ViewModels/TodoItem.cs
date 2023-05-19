@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace todo_api.Services.ViewModels;
+namespace JasonTodoAPI.ViewModels;
 
 /// <summary>
 /// Information of each todo item displaying to user
@@ -20,7 +20,11 @@ public record TodoItem
     public DateTime DueDate { get; set; }
 
     [JsonPropertyName("status")]
-    public required string Status { get; set; }
+    public required int Status { get; set; }
+
+    // for front display only
+    // [JsonPropertyName("statusMessage")]
+    // public required int StatusMessage { get; set; }
 }
 
 

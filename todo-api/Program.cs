@@ -1,8 +1,10 @@
+using JasonTodoAPI.Mappers;
+using JasonTodoAPI.ViewModels;
+using JasonTodoCore;
+using JasonTodoCore.Entities;
+using JasonTodoInfrastructure;
+using JasonTodoInfrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using todo_api.Db;
-using todo_api.Services;
-using todo_api.Services.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,15 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddLogging();
-builder.Services.AddDbContext<TodoContext>(
-    options =>
-    {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        var dbPath = System.IO.Path.Join(path, "blogging.db");
-        options.UseSqlite($"Data Source={dbPath}");
-    }
-);
+builder.Services.AddDbContext<TodoContext>();
 builder.Services.AddTransient<ITodoService, TodoService>();
 
 var app = builder.Build();
@@ -37,7 +31,10 @@ if (app.Environment.IsDevelopment())
 // GET: /todos
 app.MapGet("/todos", async ([FromServices] ITodoService todoService, [FromQuery] string? filter, [FromQuery] string? sortBy) =>
 {
-    var todoLists = await todoService.GetTodos();
+    // var columns = filter.Split(",");
+    // var sortByField = sortByField.Split(",");
+
+    var todoLists = await todoService.GetTodos(null, null);
     return Results.Ok(todoLists);
 })
 .Produces<IEnumerable<TodoItem>>(StatusCodes.Status200OK)
@@ -47,7 +44,7 @@ app.MapGet("/todos", async ([FromServices] ITodoService todoService, [FromQuery]
     generatedOperation.Summary = "Get todo list";
     generatedOperation.Description = "Get todo list";
     var parameter = generatedOperation.Parameters[0];
-    parameter.Description = "filter by"; 
+    parameter.Description = "filter by";
     parameter.Description = "sort by";
     return generatedOperation;
 });
@@ -78,14 +75,15 @@ app.MapGet("/todos/{id}", async ([FromServices] ITodoService todoService, long i
 // POST: /todos
 app.MapPost("/todos", async ([FromServices] ITodoService todoService, CreateTodoViewModel createTodoViewModel) =>
 {
-    TodoItem? todoCreate = await todoService.CreateTodo(createTodoViewModel);
-    if (todoCreate is null)
+    TodoEntity todoEntity = TodoViewModelMapper.ToTodoEntity(createTodoViewModel);
+    var todoCreateResult = await todoService.CreateTodo(todoEntity);
+    if (todoCreateResult.Success == false)
     {
         return Results.StatusCode(StatusCodes.Status400BadRequest);
     }
     else
     {
-        return Results.StatusCode(StatusCodes.Status201Created);
+        return Results.Created($"/todos/{todoEntity.Id}", todoCreateResult.Value.Id);
     }
 })
 .Produces<TodoItem>(StatusCodes.Status400BadRequest)
@@ -102,7 +100,8 @@ app.MapPost("/todos", async ([FromServices] ITodoService todoService, CreateTodo
 // PUT: /todos/{id}
 app.MapPut("/todos/{id}", async ([FromServices] ITodoService todoService, int id, UpdateTodoItemViewModel updateTodoItemViewModel) =>
 {
-    var existingTodo = await todoService.UpdateTodoById(id, updateTodoItemViewModel);
+    var todoEntity = TodoViewModelMapper.ToTodoEntity(id, updateTodoItemViewModel);
+    var existingTodo = await todoService.UpdateTodoById(id, todoEntity);
     if (existingTodo == null)
     {
         return Results.StatusCode(StatusCodes.Status404NotFound);
@@ -118,7 +117,7 @@ app.MapPut("/todos/{id}", async ([FromServices] ITodoService todoService, int id
     generatedOperation.Summary = "Update todos with id";
     generatedOperation.Description = "Update todos with id";
     var parameter = generatedOperation.Parameters[0];
-    parameter.Description = "JSON for updating the view model";
+    parameter.Description = "JSON for updating the todo";
     return generatedOperation;
 });
 
@@ -132,6 +131,14 @@ app.MapDelete("/todos/{id}", async ([FromServices] ITodoService todoService, int
     }
 
     return Results.StatusCode(StatusCodes.Status400BadRequest);
+})
+.WithOpenApi(generatedOperation =>
+{
+    generatedOperation.Summary = "Delete todos with id";
+    generatedOperation.Description = "Delete todos with id";
+    var parameter = generatedOperation.Parameters[0];
+    parameter.Description = "id for the todo to be deleted";
+    return generatedOperation;
 });
 
 app.Run();

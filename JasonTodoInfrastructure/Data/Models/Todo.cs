@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace todo_api.Db.Models;
+namespace JasonTodoInfrastructure.Data.Models;
 
 /// <summary>
 /// Entity Framework DB Model for Todo table
@@ -15,6 +15,8 @@ public class Todo
 
     [MaxLength(255)]
     public required string Description { get; set; }
+
     public required DateTime DueDate { get; set; }
-    public required string Status { get; set; }
+
+    public required int Status { get; set; }
 }

@@ -33,4 +33,14 @@ dotnet ef database update
 
 ## Language Feature
 - Nullable reference
-- 
+- Dto -> ViewModel 
+- use const instead of enum for status
+
+// for json API
+ - public required int Status { get; set; }
+
+# FilterBy, sortedBy
+
+# Trade off
+-  Task<IEnumerable<TodoEntity>> GetTodos(string[] sortByField, int[] filterByStatus);
+/// Note: I don't like to use AutoMapper, the methods relies on method overloading so I don't need to type the long name

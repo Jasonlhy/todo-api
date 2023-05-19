@@ -1,4 +1,4 @@
-﻿namespace todo_api.Constants;
+﻿namespace JasonTodoCore.Constants;
 
 public static class LoggingEvent
 {
