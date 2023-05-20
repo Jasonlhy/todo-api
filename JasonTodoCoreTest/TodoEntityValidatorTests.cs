@@ -2,7 +2,7 @@ using JasonTodoCore.Entities;
 using JasonTodoCore.Validators;
 using System.Text;
 
-namespace JasonTodoCoreTest;
+namespace JasonTodoCore.UnitTests;
 
 public class TodoEntityValidatorTests
 {

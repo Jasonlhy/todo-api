@@ -1,6 +1,6 @@
 using JasonTodoCore.Entities;
 
-namespace JasonTodoCoreTest;
+namespace JasonTodoCore.UnitTests;
 
 public class TodoStatusHelperTests
 {

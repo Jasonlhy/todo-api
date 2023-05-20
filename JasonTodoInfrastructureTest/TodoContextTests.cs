@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Data.Common;
 
-namespace JasonTodoInfrastructureTest;
+namespace JasonTodoInfrastructure.UnitTests;
 
-public class Tests : IDisposable
+public class TodoContextTests : IDisposable
 {
     private DbConnection _connection;
     private DbContextOptions<TodoContext> _contextOptions;
 
-    public Tests()
+    public TodoContextTests()
     {
 
     }

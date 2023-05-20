@@ -2,7 +2,7 @@
 using JasonTodoInfrastructure.Data.Models;
 using JasonTodoInfrastructure;
 
-namespace JasonTodoInfrastructureTest;
+namespace JasonTodoInfrastructure.UnitTests;
 
 [TestFixture]
 public class TodoEntityMapperTests

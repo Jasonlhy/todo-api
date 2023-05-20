@@ -3,7 +3,7 @@ using JasonTodoCore.Constants;
 using JasonTodoCore.Results;
 using JasonTodoCore.Validators;
 
-namespace JasonTodoApiTests;
+namespace JasonTodoAp.UnitiTests;
 
 [TestFixture]
 public class ErrorViewModelMapperTests
