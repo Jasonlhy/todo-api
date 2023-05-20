@@ -115,7 +115,7 @@ namespace JasonTodoApi.IntegrationTests
         }
 
         [Test]
-        public async Task GetTodo_NonExistIdd()
+        public async Task GetTodo_NonExistId()
         {
 
             // Not exists id
@@ -200,7 +200,7 @@ namespace JasonTodoApi.IntegrationTests
         public async Task DeleteTodoList_NonExistId()
         {
             var response = await httpClient.DeleteAsync("/todos/99");
-            Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
+            Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.NotFound));
         }
     }
 }

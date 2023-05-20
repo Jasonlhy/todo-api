@@ -62,7 +62,7 @@ static void MapTodoRoute(WebApplication app)
             return Results.BadRequest(new ErrorViewModel()
             {
                 ErrorCode = GeneralErrorCode.InvalidStatus,
-                ErrorMessages = new string[] { $"{status} is not valid" }
+                ErrorMessages = new string[] { $"{status} is not valid status" }
             });
         }
 
