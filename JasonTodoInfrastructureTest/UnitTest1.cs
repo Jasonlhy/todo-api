@@ -60,7 +60,7 @@ namespace JasonTodoInfrastructureTest
         {
             using var context = CreateContext();
             var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
-            var todoList = await todoService.GetTodos(new JasonTodoCore.Entities.Filtering
+            var todoList = await todoService.GetTodoListAsync(new JasonTodoCore.Entities.Filtering
             {
             }, "");
 
@@ -73,7 +73,7 @@ namespace JasonTodoInfrastructureTest
         {
             using var context = CreateContext();
             var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
-            var todo = await todoService.GetTodoById(1);
+            var todo = await todoService.GetTodoByIdAsync(1);
             Assert.That(todo, Is.Not.Null);
             Assert.That(todo.Description, Is.EqualTo("Task 1 desc"));
         }
@@ -83,7 +83,7 @@ namespace JasonTodoInfrastructureTest
         {
             using var context = CreateContext();
             var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
-            var todo = await todoService.GetTodoById(999);
+            var todo = await todoService.GetTodoByIdAsync(999);
             Assert.That(todo, Is.Null);
         }
 
@@ -92,7 +92,7 @@ namespace JasonTodoInfrastructureTest
         {
             using var context = CreateContext();
             var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
-            var createTodoResult = await todoService.CreateTodo(new JasonTodoCore.Entities.TodoEntity
+            var createTodoResult = await todoService.CreateTodoAsync(new JasonTodoCore.Entities.TodoEntity
             {
                 // id is not needed for creating todo
                 Name = "jason entity",
@@ -110,7 +110,7 @@ namespace JasonTodoInfrastructureTest
         {
             using var context = CreateContext();
             var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
-            var deleteResult = await todoService.DeleteTodoById(1);
+            var deleteResult = await todoService.DeleteTodoByIdAsync(1);
 
             Assert.That(deleteResult.Success, Is.EqualTo(true));
         }
@@ -120,7 +120,7 @@ namespace JasonTodoInfrastructureTest
         {
             using var context = CreateContext();
             var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
-            var deleteResult = await todoService.UpdateTodoById(1,
+            var deleteResult = await todoService.UpdateTodoByIdAsync(1,
                 new JasonTodoCore.Entities.TodoEntity
                 {
                     Name = "Task 1",
@@ -132,7 +132,7 @@ namespace JasonTodoInfrastructureTest
 
             Assert.That(deleteResult.Success, Is.EqualTo(true));
 
-            var todo = await todoService.GetTodoById(1);
+            var todo = await todoService.GetTodoByIdAsync(1);
             Assert.That(todo, Is.Not.Null);
             Assert.That(todo.Description, Is.EqualTo("New Task 1 desc"));
         }

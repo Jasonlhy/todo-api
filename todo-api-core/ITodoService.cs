@@ -16,21 +16,21 @@ public interface ITodoService
     /// <param name="filterBy"></param>
     /// <returns></returns>
     /// <exception cref="InvaliSortingFieldException">Invalid field</exception>
-    Task<IEnumerable<TodoEntity>> GetTodos(Filtering filtering, string? sortByField);
+    Task<IEnumerable<TodoEntity>> GetTodoListAsync(Filtering filtering, string? sortByField);
 
     /// <summary>
     /// Get the todo with id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<TodoEntity?> GetTodoById(long id);
+    Task<TodoEntity?> GetTodoByIdAsync(long id);
 
     /// <summary>
     /// Create todo
     /// </summary>
     /// <param name="todo"></param>
     /// <returns></returns>
-    Task<CreateResult<TodoEntity>> CreateTodo(TodoEntity todoEntity);
+    Task<CreateResult<TodoEntity>> CreateTodoAsync(TodoEntity todoEntity);
 
     /// <summary>
     /// Update todo by id
@@ -38,12 +38,12 @@ public interface ITodoService
     /// <param name="id"></param>
     /// <param name="todo"></param>
     /// <returns></returns>
-    Task<GenericResult> UpdateTodoById(long id, TodoEntity todoEntity);
+    Task<GenericResult> UpdateTodoByIdAsync(long id, TodoEntity todoEntity);
 
     /// <summary>
     /// Delete todo by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<GenericResult> DeleteTodoById(long id);
+    Task<GenericResult> DeleteTodoByIdAsync(long id);
 }

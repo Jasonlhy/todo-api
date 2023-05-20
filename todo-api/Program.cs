@@ -48,7 +48,7 @@ static void MapTodoRoute(WebApplication app)
         [FromQuery] int? status, 
         [FromQuery] string? sortBy) =>
     {
-        var todoLists = await todoService.GetTodos(new Filtering
+        var todoLists = await todoService.GetTodoListAsync(new Filtering
         {
             Name = name,
             DueDate = dueDate,
@@ -73,7 +73,7 @@ static void MapTodoRoute(WebApplication app)
     // GET: /todos/{id}
     app.MapGet("/todos/{id}", async ([FromServices] ITodoService todoService, long id) =>
     {
-        var todoEntity = await todoService.GetTodoById(id);
+        var todoEntity = await todoService.GetTodoByIdAsync(id);
         if (todoEntity is null)
         {
             return Results.StatusCode(StatusCodes.Status404NotFound);
@@ -98,7 +98,7 @@ static void MapTodoRoute(WebApplication app)
     app.MapPost("/todos", async ([FromServices] ITodoService todoService, CreateTodoViewModel createTodoViewModel) =>
     {
         TodoEntity todoEntity = JsonTodoViewModelMapper.ToTodoEntity(createTodoViewModel);
-        var todoCreateResult = await todoService.CreateTodo(todoEntity);
+        var todoCreateResult = await todoService.CreateTodoAsync(todoEntity);
         if (todoCreateResult.Success == false)
         {
             return Results.StatusCode(StatusCodes.Status400BadRequest);
@@ -124,7 +124,7 @@ static void MapTodoRoute(WebApplication app)
     app.MapPut("/todos/{id}", async ([FromServices] ITodoService todoService, int id, UpdateTodoItemViewModel updateTodoItemViewModel) =>
     {
         var todoEntity = JsonTodoViewModelMapper.ToTodoEntity(id, updateTodoItemViewModel);
-        var existingTodo = await todoService.UpdateTodoById(id, todoEntity);
+        var existingTodo = await todoService.UpdateTodoByIdAsync(id, todoEntity);
         if (existingTodo == null)
         {
             return Results.StatusCode(StatusCodes.Status404NotFound);
@@ -147,7 +147,7 @@ static void MapTodoRoute(WebApplication app)
     // DELETE: /todos/{id}
     app.MapDelete("/todos/{id}", async ([FromServices] ITodoService todoService, int id) =>
     {
-        var genericResponse = await todoService.DeleteTodoById(id);
+        var genericResponse = await todoService.DeleteTodoByIdAsync(id);
         if (genericResponse.Success)
         {
             return Results.StatusCode(StatusCodes.Status200OK);

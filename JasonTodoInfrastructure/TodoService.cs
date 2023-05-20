@@ -20,7 +20,7 @@ public class TodoService : ITodoService
         this.logger = logger;
     }
 
-    public async Task<IEnumerable<TodoEntity>> GetTodos(Filtering filtering, string? sortByField)
+    public async Task<IEnumerable<TodoEntity>> GetTodoListAsync(Filtering filtering, string? sortByField)
     {
         // Filter by
         IQueryable<Todo> todos = context.Todos;
@@ -63,7 +63,7 @@ public class TodoService : ITodoService
         return todoList.Select(TodoEntityMapper.FromTodo);
     }
 
-    public async Task<TodoEntity?> GetTodoById(long id)
+    public async Task<TodoEntity?> GetTodoByIdAsync(long id)
     {
         var todo = await context.Todos.FindAsync(id);
         if (todo is null)
@@ -74,9 +74,9 @@ public class TodoService : ITodoService
         return TodoEntityMapper.FromTodo(todo);
     }
 
-    public async Task<CreateResult<TodoEntity>> CreateTodo(TodoEntity createTodoViewwModel)
+    public async Task<CreateResult<TodoEntity>> CreateTodoAsync(TodoEntity todoEntity)
     {
-        Todo todo = TodoEntityMapper.ToTodo(createTodoViewwModel);
+        Todo todo = TodoEntityMapper.ToTodo(todoEntity);
         await context.Todos.AddAsync(todo);
 
         try
@@ -85,7 +85,7 @@ public class TodoService : ITodoService
         }
         catch (DbUpdateException ex)
         {
-            logger.LogError(LoggingEvent.CREATE_TODO, ex, "Failed to create with todo {createTodoViewwModel}", createTodoViewwModel.ToString());
+            logger.LogError(LoggingEvent.CREATE_TODO, ex, "Failed to create with todo {createTodoViewwModel}", todoEntity.ToString());
 
             return new CreateResult<TodoEntity>()
             {
@@ -101,7 +101,7 @@ public class TodoService : ITodoService
         };
     }
 
-    public async Task<GenericResult> UpdateTodoById(long id, TodoEntity updateTodoItemViewModel)
+    public async Task<GenericResult> UpdateTodoByIdAsync(long id, TodoEntity todoEntity)
     {
         var existingTodo = await context.Todos.FirstAsync(t => t.Id == id);
         if (existingTodo is null)
@@ -116,7 +116,7 @@ public class TodoService : ITodoService
 
         try
         {
-            TodoEntityMapper.UpdateTodo(existingTodo, updateTodoItemViewModel);
+            TodoEntityMapper.UpdateTodo(existingTodo, todoEntity);
             await context.SaveChangesAsync();
             return GenericResult.Good();
         }
@@ -127,13 +127,13 @@ public class TodoService : ITodoService
             return new GenericResult()
             {
                 Success = false,
-                ErrorCode = GenericResultCode.NotFound,
+                ErrorCode = GenericResultCode.DbUpdateFailed,
                 ErrorMessage = $"Failed to update the database id {id}",
             };
         }
     }
 
-    public async Task<GenericResult> DeleteTodoById(long id)
+    public async Task<GenericResult> DeleteTodoByIdAsync(long id)
     {
         var existingTodo = await context.Todos.FirstAsync(t => t.Id == id);
         if (existingTodo is null)
@@ -159,7 +159,7 @@ public class TodoService : ITodoService
             return new GenericResult()
             {
                 Success = false,
-                ErrorCode = GenericResultCode.NotFound,
+                ErrorCode = GenericResultCode.DbUpdateFailed,
                 ErrorMessage = $"Failed to delete the todolist item {id}",
             };
         }
