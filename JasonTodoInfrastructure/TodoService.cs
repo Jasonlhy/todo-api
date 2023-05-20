@@ -20,9 +20,46 @@ public class TodoService : ITodoService
         this.logger = logger;
     }
 
-    public async Task<IEnumerable<TodoEntity>> GetTodos(string[] sortByField, int[] filterByStatus)
+    public async Task<IEnumerable<TodoEntity>> GetTodos(Filtering filtering, string? sortByField)
     {
-        var todoList = await context.Todos.ToListAsync();
+        // Filter by
+        IQueryable<Todo> todos = context.Todos;
+        if (filtering.Name is not null)
+        {
+            todos = todos.Where(t => t.Name == filtering.Name);
+        }
+        else if (filtering.Status is not null)
+        {
+            todos = todos.Where(t => t.Status == filtering.Status);
+        }
+        else if (filtering.DueDate is not null)
+        {
+            todos = todos.Where(t => t.DueDate == filtering.DueDate);
+        }
+
+        // Order by 
+        if (!string.IsNullOrEmpty(sortByField))
+        {
+            // todo
+            if (sortByField == "name")
+            {
+                todos = todos.OrderBy(t => t.Name);
+            }
+            else if (sortByField == "stats")
+            {
+                todos = todos.OrderBy(t => t.Status);
+            }
+            else if (sortByField == "dueDate")
+            {
+                todos = todos.OrderBy(t => t.DueDate);
+            }
+            else
+            {
+                throw new InvalidOperationException("Unsupported field to be sorted by");
+            }
+        }
+
+        var todoList = await todos.ToListAsync();
         return todoList.Select(TodoEntityMapper.FromTodo);
     }
 

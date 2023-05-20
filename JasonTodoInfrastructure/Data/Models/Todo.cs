@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using JasonTodoCore.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace JasonTodoInfrastructure.Data.Models;
 
@@ -10,10 +11,10 @@ public class Todo
     [Key]
     public long Id { get; set; }
 
-    [MaxLength(100)]
+    [MaxLength(TodoConstant.NAME_LENGTH)]
     public required string Name { get; set; }
 
-    [MaxLength(255)]
+    [MaxLength(TodoConstant.DESCRIPTION_LENGTH)]
     public required string Description { get; set; }
 
     public required DateTime DueDate { get; set; }

@@ -38,7 +38,8 @@ public static class TodoEntityMapper
             Name = todo.Name,
             Description = todo.Description,
             DueDate = todo.DueDate,
-            Status = todo.Status
+            Status = todo.Status,
+            
         };
     }
 }

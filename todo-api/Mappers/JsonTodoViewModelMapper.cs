@@ -6,7 +6,7 @@ namespace JasonTodoAPI.Mappers;
 /// <summary>
 /// Mapper to convert between JSON view model and domain entity
 /// </summary>
-public static class TodoViewModelMapper
+public static class JsonTodoViewModelMapper
 {
     public static TodoEntity ToTodoEntity(CreateTodoViewModel createTodoViewModel)
     {
@@ -16,7 +16,7 @@ public static class TodoViewModelMapper
             Name = createTodoViewModel.Name,
             Description = createTodoViewModel.Description,
             DueDate = createTodoViewModel.DueDate,
-            Status =  createTodoViewModel.Status,
+            Status = createTodoViewModel.Status,
         };
     }
 
@@ -29,18 +29,6 @@ public static class TodoViewModelMapper
             Description = updateToddoViewModel.Description,
             DueDate = updateToddoViewModel.DueDate,
             Status = updateToddoViewModel.Status,
-        };
-    }
-
-    public static TodoItem FromTodoEntity(TodoEntity todoEntity)
-    {
-        return new TodoItem
-        {
-            Id = todoEntity.Id,
-            Name = todoEntity.Name,
-            Description = todoEntity.Description,
-            DueDate = todoEntity.DueDate,
-            Status = todoEntity.Status,
         };
     }
 }

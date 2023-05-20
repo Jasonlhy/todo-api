@@ -22,9 +22,8 @@ public record TodoItem
     [JsonPropertyName("status")]
     public required int Status { get; set; }
 
-    // for front display only
-    // [JsonPropertyName("statusMessage")]
-    // public required int StatusMessage { get; set; }
+    [JsonPropertyName("statusString")]
+    public required string StatusString { get; set; }
 }
 
 

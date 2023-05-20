@@ -16,7 +16,7 @@ public interface ITodoService
     /// <param name="filterBy"></param>
     /// <returns></returns>
     /// <exception cref="InvalidFieldSortingException">Invalid field</exception>
-    Task<IEnumerable<TodoEntity>> GetTodos(string[] sortByField, int[] filterByStatus);
+    Task<IEnumerable<TodoEntity>> GetTodos(Filtering filtering, string? sortByField);
 
     /// <summary>
     /// Get the todo with id

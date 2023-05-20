@@ -38,6 +38,7 @@ dotnet ef database update
 
 // for json API
  - public required int Status { get; set; }
+- For missing field
 
 # FilterBy, sortedBy
 
