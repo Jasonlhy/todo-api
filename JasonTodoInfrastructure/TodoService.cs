@@ -139,7 +139,7 @@ public class TodoService : ITodoService
 
     public async Task<GenericResult> DeleteTodoByIdAsync(long id)
     {
-        var existingTodo = await context.Todos.FirstAsync(t => t.Id == id);
+        var existingTodo = await context.Todos.FindAsync(id);
         if (existingTodo is null)
         {
             return new GenericResult()

@@ -45,16 +45,26 @@ https://localhost:7124/swagger/index.html
 # Unit Test
 - 
 
-# Integration Test
+## Unit Test
+
+## Integration Test
 - It 
 
 # FilterBy, sortedBy
 
-# Trade off
+# Trade off and design consideration
 - The service
 
+## Improvement
+-       var xml = """
+                    {
+                        "name" : "API Name",
+                        "description" : "API Description",
+                        "status" : 0,
+                        "dueDate" : 
+                    }
+                    """;
 ## Logging
-
 
 -  Task<IEnumerable<TodoEntity>> GetTodos(string[] sortByField, int[] filterByStatus);
 /// Note: I don't like to use AutoMapper, the methods relies on method overloading so I don't need to type the long name

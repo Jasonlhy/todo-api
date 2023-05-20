@@ -8,6 +8,7 @@ using JasonTodoInfrastructure;
 using JasonTodoInfrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddLogging();
+
+// Our servie
 builder.Services.AddDbContext<TodoContext>(optionsBuilder =>
 {
     var folder = Environment.SpecialFolder.LocalApplicationData;
@@ -40,6 +43,8 @@ MapTodoRoute(app);
 
 app.Run();
 
+
+
 static void MapTodoRoute(WebApplication app)
 {
     // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/openapi?view=aspnetcore-7.0
@@ -51,7 +56,7 @@ static void MapTodoRoute(WebApplication app)
         [FromQuery] string? sortBy) =>
     {
         // This fields is kind of .... 
-        if (status.HasValue && TodoStatusHelper.IsValidTodoStatus(status.Value))
+        if (status.HasValue && !TodoStatusHelper.IsValidTodoStatus(status.Value))
         {
             return Results.BadRequest(new ErrorViewModel()
             {
@@ -149,10 +154,10 @@ static void MapTodoRoute(WebApplication app)
             return Results.BadRequest(ErrorViewModelMapper.FromValidationErrorDetail(validator.GetErrors()));
         }
 
-        var existingTodo = await todoService.UpdateTodoByIdAsync(id, todoEntity);
-        if (existingTodo == null)
+        var genericResult = await todoService.UpdateTodoByIdAsync(id, todoEntity);
+        if (!genericResult.Success)
         {
-            return Results.StatusCode(StatusCodes.Status404NotFound);
+            return Results.BadRequest(ErrorViewModelMapper.FromGenericResult(genericResult));
         }
 
         return Results.StatusCode(StatusCodes.Status200OK);
@@ -173,12 +178,12 @@ static void MapTodoRoute(WebApplication app)
     app.MapDelete("/todos/{id}", async ([FromServices] ITodoService todoService, int id) =>
     {
         var genericResponse = await todoService.DeleteTodoByIdAsync(id);
-        if (genericResponse.Success)
+        if (!genericResponse.Success)
         {
-            return Results.StatusCode(StatusCodes.Status200OK);
+            return Results.BadRequest(ErrorViewModelMapper.FromGenericResult(genericResponse));
         }
 
-        return Results.StatusCode(StatusCodes.Status400BadRequest);
+        return Results.StatusCode(StatusCodes.Status200OK);
     })
     .WithOpenApi(generatedOperation =>
     {
@@ -189,3 +194,6 @@ static void MapTodoRoute(WebApplication app)
         return generatedOperation;
     });
 }
+
+// for integration test
+public partial class Program { }
