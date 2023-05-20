@@ -1,12 +1,12 @@
 ﻿using JasonTodoAPI.ViewModels;
+using JasonTodoCore.Constants;
 using JasonTodoCore.Entities;
-
 namespace JasonTodoAPI.Mappers;
 
 /// <summary>
-/// Mapper to convert between JSON view model and domain entity
+/// Mapper to convert between other JSON view model and domain objects
 /// </summary>
-public static class JsonTodoViewModelMapper
+public static class CreateUpdateViewModelMapper
 {
     public static TodoEntity ToTodoEntity(CreateTodoViewModel createTodoViewModel)
     {

@@ -1,6 +1,7 @@
 ﻿using JasonTodoCore;
 using JasonTodoCore.Constants;
 using JasonTodoCore.Entities;
+using JasonTodoCore.Exceptions;
 using JasonTodoCore.Results;
 using JasonTodoInfrastructure.Data;
 using JasonTodoInfrastructure.Data.Models;
@@ -9,6 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace JasonTodoInfrastructure;
 
+/// <summary>
+/// Implementation of the Todo list with EntityFramework core conntaing to database
+/// </summary>
 public class TodoService : ITodoService
 {
     private readonly TodoContext context;
@@ -55,7 +59,7 @@ public class TodoService : ITodoService
             }
             else
             {
-                throw new InvalidOperationException("Unsupported field to be sorted by");
+                throw new InvaliSortingFieldException(sortByField);
             }
         }
 
@@ -103,13 +107,13 @@ public class TodoService : ITodoService
 
     public async Task<GenericResult> UpdateTodoByIdAsync(long id, TodoEntity todoEntity)
     {
-        var existingTodo = await context.Todos.FirstAsync(t => t.Id == id);
+        var existingTodo = await context.Todos.FindAsync(id);
         if (existingTodo is null)
         {
             return new GenericResult()
             {
                 Success = false,
-                ErrorCode = GenericResultCode.NotFound,
+                ErrorCode = GeneralErrorCode.NotFound,
                 ErrorMessage = $"Cannot find todo list with id {id} to update",
             };
         }
@@ -118,7 +122,7 @@ public class TodoService : ITodoService
         {
             TodoEntityMapper.UpdateTodo(existingTodo, todoEntity);
             await context.SaveChangesAsync();
-            return GenericResult.Good();
+            return GenericResult.True();
         }
         catch (DbUpdateException ex)
         {
@@ -127,7 +131,7 @@ public class TodoService : ITodoService
             return new GenericResult()
             {
                 Success = false,
-                ErrorCode = GenericResultCode.DbUpdateFailed,
+                ErrorCode = GeneralErrorCode.DbUpdateFailed,
                 ErrorMessage = $"Failed to update the database id {id}",
             };
         }
@@ -141,7 +145,7 @@ public class TodoService : ITodoService
             return new GenericResult()
             {
                 Success = false,
-                ErrorCode = GenericResultCode.NotFound,
+                ErrorCode = GeneralErrorCode.NotFound,
                 ErrorMessage = $"Cannot find todo list with id {id} to delete",
             };
         }
@@ -150,7 +154,7 @@ public class TodoService : ITodoService
         {
             context.Todos.Remove(existingTodo);
             await context.SaveChangesAsync();
-            return GenericResult.Good();
+            return GenericResult.True();
         }
         catch (DbUpdateException ex)
         {
@@ -159,7 +163,7 @@ public class TodoService : ITodoService
             return new GenericResult()
             {
                 Success = false,
-                ErrorCode = GenericResultCode.DbUpdateFailed,
+                ErrorCode = GeneralErrorCode.DbUpdateFailed,
                 ErrorMessage = $"Failed to delete the todolist item {id}",
             };
         }

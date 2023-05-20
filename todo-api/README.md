@@ -31,9 +31,9 @@ dotnet ef database update
 
  dotnet ef database update --connection "Data Source=C:\\Users\\J-LHY\\AppData\\Local\\blogging2.db"
 
-## Logging
-
 ## Language Feature
+https://localhost:7124/swagger/index.html
+
 - Nullable reference
 - Dto -> ViewModel 
 - use const instead of enum for status
@@ -51,5 +51,10 @@ dotnet ef database update
 # FilterBy, sortedBy
 
 # Trade off
+- The service
+
+## Logging
+
+
 -  Task<IEnumerable<TodoEntity>> GetTodos(string[] sortByField, int[] filterByStatus);
 /// Note: I don't like to use AutoMapper, the methods relies on method overloading so I don't need to type the long name

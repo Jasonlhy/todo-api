@@ -1,7 +1,9 @@
 using JasonTodoAPI.Mappers;
 using JasonTodoAPI.ViewModels;
 using JasonTodoCore;
+using JasonTodoCore.Constants;
 using JasonTodoCore.Entities;
+using JasonTodoCore.Validators;
 using JasonTodoInfrastructure;
 using JasonTodoInfrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -42,12 +44,22 @@ static void MapTodoRoute(WebApplication app)
 {
     // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/openapi?view=aspnetcore-7.0
     // GET: /todos
-    app.MapGet("/todos", async ([FromServices] ITodoService todoService, 
-        [FromQuery] DateTime? dueDate, 
-        [FromQuery] string? name, 
-        [FromQuery] int? status, 
+    app.MapGet("/todos", async ([FromServices] ITodoService todoService,
+        [FromQuery] DateTime? dueDate,
+        [FromQuery] string? name,
+        [FromQuery] int? status,
         [FromQuery] string? sortBy) =>
     {
+        // This fields is kind of .... 
+        if (status.HasValue && TodoStatusHelper.IsValidTodoStatus(status.Value))
+        {
+            return Results.BadRequest(new ErrorViewModel()
+            {
+                ErrorCode = GeneralErrorCode.InvalidStatus,
+                ErrorMessages = new string[] { $"{status} is not valid" }
+            });
+        }
+
         var todoLists = await todoService.GetTodoListAsync(new Filtering
         {
             Name = name,
@@ -97,11 +109,18 @@ static void MapTodoRoute(WebApplication app)
     // POST: /todos
     app.MapPost("/todos", async ([FromServices] ITodoService todoService, CreateTodoViewModel createTodoViewModel) =>
     {
-        TodoEntity todoEntity = JsonTodoViewModelMapper.ToTodoEntity(createTodoViewModel);
+        TodoEntity todoEntity = CreateUpdateViewModelMapper.ToTodoEntity(createTodoViewModel);
+        var validator = new TodoEntityValidator();
+        if (validator.IsValid(todoEntity) == false)
+        {
+            return Results.BadRequest(ErrorViewModelMapper.FromValidationErrorDetail(validator.GetErrors()));
+        }
+
         var todoCreateResult = await todoService.CreateTodoAsync(todoEntity);
         if (todoCreateResult.Success == false)
         {
-            return Results.StatusCode(StatusCodes.Status400BadRequest);
+            var errorResponse = ErrorViewModelMapper.FromGenericResult(todoCreateResult);
+            return Results.BadRequest(errorResponse);
         }
         else
         {
@@ -123,7 +142,13 @@ static void MapTodoRoute(WebApplication app)
     // PUT: /todos/{id}
     app.MapPut("/todos/{id}", async ([FromServices] ITodoService todoService, int id, UpdateTodoItemViewModel updateTodoItemViewModel) =>
     {
-        var todoEntity = JsonTodoViewModelMapper.ToTodoEntity(id, updateTodoItemViewModel);
+        var todoEntity = CreateUpdateViewModelMapper.ToTodoEntity(id, updateTodoItemViewModel);
+        var validator = new TodoEntityValidator();
+        if (validator.IsValid(todoEntity) == false)
+        {
+            return Results.BadRequest(ErrorViewModelMapper.FromValidationErrorDetail(validator.GetErrors()));
+        }
+
         var existingTodo = await todoService.UpdateTodoByIdAsync(id, todoEntity);
         if (existingTodo == null)
         {

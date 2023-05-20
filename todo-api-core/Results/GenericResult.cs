@@ -9,7 +9,11 @@ public class GenericResult
 
     public string? ErrorMessage { get; set; }
 
+    /// <summary>
+    /// Error code indicate the type of the error
+    /// <see cref="GeneralErrorCode"/>
+    /// </summary>
     public int? ErrorCode { get; set; }
 
-    public static GenericResult Good() => new GenericResult() { Success = true };
+    public static GenericResult True() => new GenericResult() { Success = true };
 }

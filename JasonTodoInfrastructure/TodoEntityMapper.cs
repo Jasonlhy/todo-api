@@ -5,8 +5,6 @@ namespace JasonTodoInfrastructure;
 
 /// <summary>
 /// Mapper to convert between domain entity todo and database todo table
-/// 
-/// Note: I don't like to use AutoMapper, the methods relies on method overloading so I don't need to type the long name
 /// </summary>
 public static class TodoEntityMapper
 {

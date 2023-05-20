@@ -4,7 +4,7 @@ using JasonTodoCore.Entities;
 namespace JasonTodoAPI.Mappers;
 
 /// <summary>
-/// Mapper to convert between JSON view model and domain entity
+/// Mapper to convert between TodoEntity and TodoItem
 /// </summary>
 public static class TodoItemMapper
 {

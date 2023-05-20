@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasonTodoInfrastructureTest", "JasonTodoInfrastructureTest\JasonTodoInfrastructureTest.csproj", "{51AACA06-D912-4ECB-878B-D4574682CCDE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{10F52C9D-2570-4952-9493-8FE6139392B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasonTodoApiTests", "JasonTodoApiTests\JasonTodoApiTests.csproj", "{04644603-2501-490C-A311-93F8518D323C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +45,10 @@ Global
 		{51AACA06-D912-4ECB-878B-D4574682CCDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51AACA06-D912-4ECB-878B-D4574682CCDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51AACA06-D912-4ECB-878B-D4574682CCDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04644603-2501-490C-A311-93F8518D323C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04644603-2501-490C-A311-93F8518D323C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04644603-2501-490C-A311-93F8518D323C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04644603-2501-490C-A311-93F8518D323C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +56,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DA892150-A0EB-44E1-B612-9AB97A907874} = {D16AFD95-DD6B-485C-B281-03B0C6606DBD}
 		{51AACA06-D912-4ECB-878B-D4574682CCDE} = {D16AFD95-DD6B-485C-B281-03B0C6606DBD}
+		{04644603-2501-490C-A311-93F8518D323C} = {D16AFD95-DD6B-485C-B281-03B0C6606DBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AFE11E9-CBED-4A8C-B33E-5F4896968930}
