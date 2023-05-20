@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["todo-api/todo-api.csproj", "todo-api/"]
-RUN dotnet restore "todo-api/todo-api.csproj"
+COPY ["JasonTodoApi/JasonTodoApi.csproj", "JasonTodoApi/"]
+RUN dotnet restore "JasonTodoApi/JasonTodoApi.csproj"
 COPY . .
-WORKDIR "/src/todo-api"
-RUN dotnet build "todo-api.csproj" -c Release -o /app/build
+WORKDIR "/src/JasonTodoApi"
+RUN dotnet build "JasonTodoApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "todo-api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "JasonTodoApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "todo-api.dll"]
+ENTRYPOINT ["dotnet", "JasonTodoApi.dll"]

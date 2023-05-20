@@ -26,8 +26,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\JasonTodoInfrastructure\JasonTodoInfrastructure.csproj" />
-		<ProjectReference Include="..\todo-api-core\JasonTodoCore.csproj" />
+	  <ProjectReference Include="..\JasonTodoCore\JasonTodoCore.csproj" />
+	  <ProjectReference Include="..\JasonTodoInfrastructure\JasonTodoInfrastructure.csproj" />
 	</ItemGroup>
+
+
 
 </Project>

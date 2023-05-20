@@ -16,6 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\todo-api-core\JasonTodoCore.csproj" />
+	  <ProjectReference Include="..\JasonTodoCore\JasonTodoCore.csproj" />
 	</ItemGroup>
 </Project>

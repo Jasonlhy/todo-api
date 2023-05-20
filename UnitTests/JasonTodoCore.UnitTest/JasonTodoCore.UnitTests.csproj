@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JasonTodoInfrastructure\JasonTodoInfrastructure.csproj" />
+    <ProjectReference Include="..\..\JasonTodoCore\JasonTodoCore.csproj" />
   </ItemGroup>
 
 </Project>
