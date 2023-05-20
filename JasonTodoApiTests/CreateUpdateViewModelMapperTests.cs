@@ -1,4 +1,6 @@
-﻿namespace JasonTodoAp.UnitiTests;
+﻿using JasonTodoApi.Mappers;
+
+namespace JasonTodoAp.UnitiTests;
 
 public class CreateUpdateViewModelMapperTests
 {

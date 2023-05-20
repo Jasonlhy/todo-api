@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace JasonTodoAPI.ViewModels;
+namespace JasonTodoApi.ViewModels;
 
 /// <summary>
 /// View model for updating todo item request

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace JasonTodoAPI.ViewModels;
+namespace JasonTodoApi.ViewModels;
 
 public record ErrorViewModel
 {

@@ -1,5 +1,5 @@
-using JasonTodoAPI.Mappers;
-using JasonTodoAPI.ViewModels;
+using JasonTodoApi.Mappers;
+using JasonTodoApi.ViewModels;
 using JasonTodoCore;
 using JasonTodoCore.Constants;
 using JasonTodoCore.Entities;

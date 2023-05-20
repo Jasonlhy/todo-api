@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace JasonTodoAPI.ViewModels;
+namespace JasonTodoApi.ViewModels;
 
 /// <summary>
 /// Information of each todo item displaying to user

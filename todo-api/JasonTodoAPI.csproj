@@ -4,7 +4,7 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<RootNamespace>JasonTodoAPI</RootNamespace>
+		<RootNamespace>JasonTodoApi</RootNamespace>
 		<UserSecretsId>6b46db04-ba2b-45bd-b1e6-c2afee1c7f9b</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	</PropertyGroup>

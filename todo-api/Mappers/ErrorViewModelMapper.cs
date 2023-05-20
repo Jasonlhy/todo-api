@@ -1,9 +1,9 @@
-﻿using JasonTodoAPI.ViewModels;
+﻿using JasonTodoApi.ViewModels;
 using JasonTodoCore.Constants;
 using JasonTodoCore.Results;
 using JasonTodoCore.Validators;
 
-namespace JasonTodoAPI.Mappers;
+namespace JasonTodoApi.Mappers;
 
 public static class ErrorViewModelMapper
 {

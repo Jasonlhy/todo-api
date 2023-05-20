@@ -1,7 +1,7 @@
-﻿using JasonTodoAPI.ViewModels;
+﻿using JasonTodoApi.ViewModels;
 using JasonTodoCore.Constants;
 using JasonTodoCore.Entities;
-namespace JasonTodoAPI.Mappers;
+namespace JasonTodoApi.Mappers;
 
 /// <summary>
 /// Mapper to convert between other JSON view model and domain objects
