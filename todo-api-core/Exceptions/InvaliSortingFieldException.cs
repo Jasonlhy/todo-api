@@ -1,10 +1,9 @@
-﻿namespace JasonTodoCore.Exceptions
+﻿namespace JasonTodoCore.Exceptions;
+
+public class InvaliSortingFieldException : Exception
 {
-    public class InvaliSortingFieldException : Exception
+    public InvaliSortingFieldException(string fieldName) 
     {
-        public InvaliSortingFieldException(string fieldName) 
-        {
-            
-        }
+        
     }
 }
