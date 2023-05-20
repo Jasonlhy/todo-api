@@ -101,7 +101,7 @@ public class TodoService : ITodoService
         };
     }
 
-    public async Task<GenericResult> UpdateTodoById(int id, TodoEntity updateTodoItemViewModel)
+    public async Task<GenericResult> UpdateTodoById(long id, TodoEntity updateTodoItemViewModel)
     {
         var existingTodo = await context.Todos.FirstAsync(t => t.Id == id);
         if (existingTodo is null)
@@ -133,7 +133,7 @@ public class TodoService : ITodoService
         }
     }
 
-    public async Task<GenericResult> DeleteTodoById(int id)
+    public async Task<GenericResult> DeleteTodoById(long id)
     {
         var existingTodo = await context.Todos.FirstAsync(t => t.Id == id);
         if (existingTodo is null)

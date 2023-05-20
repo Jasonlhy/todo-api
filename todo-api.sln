@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasonTodoCore", "todo-api-c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasonTodoInfrastructure", "JasonTodoInfrastructure\JasonTodoInfrastructure.csproj", "{BB0754A7-3777-4B1E-92B9-5120CA34AAF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasonTodoCoreTest", "JasonTodoCoreTest\JasonTodoCoreTest.csproj", "{DA892150-A0EB-44E1-B612-9AB97A907874}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{D16AFD95-DD6B-485C-B281-03B0C6606DBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,16 @@ Global
 		{BB0754A7-3777-4B1E-92B9-5120CA34AAF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB0754A7-3777-4B1E-92B9-5120CA34AAF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB0754A7-3777-4B1E-92B9-5120CA34AAF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA892150-A0EB-44E1-B612-9AB97A907874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA892150-A0EB-44E1-B612-9AB97A907874}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA892150-A0EB-44E1-B612-9AB97A907874}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA892150-A0EB-44E1-B612-9AB97A907874}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DA892150-A0EB-44E1-B612-9AB97A907874} = {D16AFD95-DD6B-485C-B281-03B0C6606DBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AFE11E9-CBED-4A8C-B33E-5F4896968930}

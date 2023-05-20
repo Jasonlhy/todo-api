@@ -15,7 +15,7 @@ public interface ITodoService
     /// <param name="sortBy">Sort by multiiple column</param>
     /// <param name="filterBy"></param>
     /// <returns></returns>
-    /// <exception cref="InvalidFieldSortingException">Invalid field</exception>
+    /// <exception cref="InvaliSortingFieldException">Invalid field</exception>
     Task<IEnumerable<TodoEntity>> GetTodos(Filtering filtering, string? sortByField);
 
     /// <summary>
@@ -38,12 +38,12 @@ public interface ITodoService
     /// <param name="id"></param>
     /// <param name="todo"></param>
     /// <returns></returns>
-    Task<GenericResult> UpdateTodoById(int id, TodoEntity todoEntity);
+    Task<GenericResult> UpdateTodoById(long id, TodoEntity todoEntity);
 
     /// <summary>
     /// Delete todo by id
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<GenericResult> DeleteTodoById(int id);
+    Task<GenericResult> DeleteTodoById(long id);
 }
