@@ -1,6 +1,5 @@
 ﻿using JasonTodoCore.Entities;
 using JasonTodoInfrastructure.Data.Models;
-using JasonTodoInfrastructure;
 
 namespace JasonTodoInfrastructure.UnitTests;
 

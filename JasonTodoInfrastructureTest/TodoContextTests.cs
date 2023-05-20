@@ -1,4 +1,6 @@
-using JasonTodoInfrastructure;
+using JasonTodoCore.Entities;
+using JasonTodoCore.Exceptions;
+using JasonTodoCore;
 using JasonTodoInfrastructure.Data;
 using JasonTodoInfrastructure.Data.Models;
 using Microsoft.Data.Sqlite;
@@ -44,10 +46,12 @@ public class TodoContextTests : IDisposable
             // viewCommand.ExecuteNonQuery();
         }
 
-        // Seed records: 2 row
+        // Seed records: 4 row
         context.AddRange(
-            new Todo { Id = 1, Name = "Task 1", Description = "Task 1 desc", DueDate = DateTime.Now, Status = 0 },
-            new Todo { Id = 2, Name = "Task 2", Description = "Task 2 desc", DueDate = DateTime.Now, Status = 0 }
+            new Todo { Id = 1, Name = "Task 1", Description = "Task 1 desc", DueDate = new DateTime(2022, 12, 31), Status = TodoStatus.NOT_STARTED },
+            new Todo { Id = 2, Name = "Task 2", Description = "Task 2 desc", DueDate = new DateTime(2023, 1, 1), Status = TodoStatus.IN_PROGRESS },
+            new Todo { Id = 3, Name = "A Task 3", Description = "Task 3 desc", DueDate = new DateTime(2023, 1, 2), Status = TodoStatus.COMPLETED },
+            new Todo { Id = 4, Name = "Task 4", Description = "Task 3 desc", DueDate = new DateTime(2023, 1, 3), Status = TodoStatus.COMPLETED }
         );
 
         context.SaveChanges();
@@ -56,16 +60,135 @@ public class TodoContextTests : IDisposable
     TodoContext CreateContext() => new TodoContext(_contextOptions);
 
     [Test]
-    public async Task GetTodo_Return2Elements()
+    public async Task GetTodoListAsync_WhenNoFilteringAndNoSortBy()
     {
+        // Arrange
         using var context = CreateContext();
         var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
-        var todoList = await todoService.GetTodoListAsync(new JasonTodoCore.Entities.Filtering
-        {
-        }, "");
 
+        // Act 
+        var todoList = await todoService.GetTodoListAsync(new Filtering(), "");
 
-        Assert.That(todoList.Count, Is.EqualTo(2));
+        // Assert
+        Assert.That(todoList.Count, Is.EqualTo(4));
+    }
+
+    [Test]
+    public async Task GetTodoListAsync_WhenFilteringByName_ReturnsFilteredTodoList()
+    {
+        // Arrange
+        var filtering = new Filtering { Name = "Task 2" };
+        string? sortByField = null;
+
+        // Act
+        using var context = CreateContext();
+        var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
+        var result = await todoService.GetTodoListAsync(filtering, sortByField);
+
+        // Assert
+        Assert.That(result.Count(), Is.EqualTo(1));
+        Assert.That(result.First().Name, Is.EqualTo("Task 2"));
+    }
+
+    [Test]
+    public async Task GetTodoListAsync_WhenFilteringByStatus_ReturnsFilteredTodoList()
+    {
+        // Arrange
+        var filtering = new Filtering { Status = TodoStatus.COMPLETED };
+        string? sortByField = null;
+        using var context = CreateContext();
+        var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
+
+        // Act
+        var result = await todoService.GetTodoListAsync(filtering, sortByField);
+
+        // Assert
+        Assert.That(result.Count(), Is.EqualTo(2));
+        Assert.That(result.All(t => t.Status == TodoStatus.COMPLETED), Is.True);
+    }
+
+    [Test]
+    public async Task GetTodoListAsync_WhenFilteringByDueDate_ReturnsFilteredTodoList()
+    {
+        // Arrange
+        var filtering = new Filtering { DueDate = new DateTime(2022, 12, 31) };
+        string sortByField = null;
+
+        // Act
+        using var context = CreateContext();
+        var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
+        var result = await todoService.GetTodoListAsync(filtering, sortByField);
+
+        // Assert
+        Assert.That(result.Count(), Is.EqualTo(1));
+        Assert.That(result.First().DueDate, Is.EqualTo(new DateTime(2022, 12, 31)));
+    }
+
+    [Test]
+    public async Task GetTodoListAsync_WhenSortingByName_ReturnsSortedTodoList()
+    {
+        // Arrange
+        var filtering = new Filtering();
+        string sortByField = "name";
+        using var context = CreateContext();
+        var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
+
+        // Act
+        var result = await todoService.GetTodoListAsync(filtering, sortByField);
+
+        // Assert
+        Assert.That(result.Count(), Is.EqualTo(4));
+        Assert.That(result.First().Name, Is.EqualTo("A Task 3"));
+        Assert.That(result.Last().Name, Is.EqualTo("Task 4"));
+    }
+
+    [Test]
+    public async Task GetTodoListAsync_WhenSortingByStatus_ReturnsSortedTodoList()
+    {
+        // Arrange
+        var filtering = new Filtering();
+        string sortByField = "stats";
+        using var context = CreateContext();
+        var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
+
+        // Act
+        var result = await todoService.GetTodoListAsync(filtering, sortByField);
+
+        // Assert
+        Assert.That(result.Count(), Is.EqualTo(4));
+        Assert.That(result.First().Status, Is.EqualTo(TodoStatus.NOT_STARTED));
+        Assert.That(result.Last().Status, Is.EqualTo(TodoStatus.COMPLETED));
+    }
+
+    [Test]
+    public async Task GetTodoListAsync_WhenSortingByDueDate_ReturnsSortedTodoList()
+    {
+        // Arrange
+        var filtering = new Filtering();
+        string sortByField = "dueDate";
+        using var context = CreateContext();
+        var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
+
+        // Act
+        var result = await todoService.GetTodoListAsync(filtering, sortByField);
+
+        // Assert
+        Assert.That(result.Count(), Is.EqualTo(4));
+        Assert.That(result.First().DueDate, Is.EqualTo(new DateTime(2022, 12, 31)));
+        Assert.That(result.Last().DueDate, Is.EqualTo(new DateTime(2023, 1, 3)));
+    }
+
+    [Test]
+    public void GetTodoListAsync_WhenSortingByInvalidField_ThrowsInvalidSortingFieldException()
+    {
+        // Arrange
+        var filtering = new Filtering();
+        string sortByField = "invalidField";
+        using var context = CreateContext();
+        var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
+
+        // Act & Assert
+        Assert.ThrowsAsync<InvalidSortingFieldException>(() => todoService.GetTodoListAsync(filtering, sortByField));
     }
 
     [Test]
@@ -102,7 +225,7 @@ public class TodoContextTests : IDisposable
         });
 
         Assert.That(createTodoResult.Success, Is.EqualTo(true));
-        Assert.That(createTodoResult.Value.Id, Is.EqualTo(3));
+        Assert.That(createTodoResult.Value.Id, Is.EqualTo(5));
     }
 
     [Test]

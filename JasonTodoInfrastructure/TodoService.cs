@@ -59,7 +59,7 @@ public class TodoService : ITodoService
             }
             else
             {
-                throw new InvaliSortingFieldException(sortByField);
+                throw new InvalidSortingFieldException(sortByField);
             }
         }
 
