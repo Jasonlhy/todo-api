@@ -1,4 +1,5 @@
 using JasonTodoApi.ViewModels;
+using JasonTodoCore.Constants;
 using JasonTodoCore.Entities;
 using JasonTodoInfrastructure.Data;
 using JasonTodoInfrastructure.Data.Models;
@@ -53,6 +54,8 @@ namespace JasonTodoApi.IntegrationTests
 
             var response = await httpClient.GetAsync("/todos?status=999");
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
+            var errorViewModel = System.Text.Json.JsonSerializer.Deserialize<ErrorViewModel>(response.Content.ReadAsStream());
+            Assert.That(errorViewModel.ErrorCode, Is.EqualTo(GeneralErrorCode.InvalidStatus));
         }
 
         [Test]

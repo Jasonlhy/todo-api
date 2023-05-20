@@ -10,13 +10,13 @@ namespace JasonTodoCore;
 public interface ITodoService
 {
     /// <summary>
-    /// Get todo list
+    /// Get todolist 
     /// </summary>
-    /// <param name="sortBy">Sort by multiiple column</param>
-    /// <param name="filterBy"></param>
+    /// <param name="filtering">Filtering object</param>
+    /// <param name="sortByField">Sort by field value</param>
+    /// <param name="sortAscending">Sort by ascending? which is default</param>
     /// <returns></returns>
-    /// <exception cref="InvaliSortingFieldException">Invalid field</exception>
-    Task<IEnumerable<TodoEntity>> GetTodoListAsync(Filtering filtering, string? sortByField);
+    Task<IEnumerable<TodoEntity>> GetTodoListAsync(Filtering filtering, string? sortByField, bool sortAscending = true);
 
     /// <summary>
     /// Get the todo with id

@@ -24,7 +24,7 @@ public class TodoService : ITodoService
         this.logger = logger;
     }
 
-    public async Task<IEnumerable<TodoEntity>> GetTodoListAsync(Filtering filtering, string? sortByField)
+    public async Task<IEnumerable<TodoEntity>> GetTodoListAsync(Filtering filtering, string? sortByField, bool sortAscending = true)
     {
         // Filter by
         IQueryable<Todo> todos = context.Todos;
@@ -47,15 +47,15 @@ public class TodoService : ITodoService
             // todo
             if (sortByField == "name")
             {
-                todos = todos.OrderBy(t => t.Name);
+                todos = (sortAscending) ? todos.OrderBy(t => t.Name) : todos.OrderByDescending(t => t.Name);
             }
             else if (sortByField == "stats")
             {
-                todos = todos.OrderBy(t => t.Status);
+                todos = (sortAscending) ? todos.OrderBy(t => t.Status) : todos.OrderByDescending(t => t.Status);
             }
             else if (sortByField == "dueDate")
             {
-                todos = todos.OrderBy(t => t.DueDate);
+                todos = (sortAscending) ? todos.OrderBy(t => t.DueDate) : todos.OrderByDescending(t => t.DueDate);
             }
             else
             {

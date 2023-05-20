@@ -53,7 +53,8 @@ static void MapTodoRoute(WebApplication app)
         [FromQuery] DateTime? dueDate,
         [FromQuery] string? name,
         [FromQuery] int? status,
-        [FromQuery] string? sortBy) =>
+        [FromQuery] string? sortBy,
+        [FromQuery] bool? sortAscending) =>
     {
         // This fields is kind of .... 
         if (status.HasValue && !TodoStatusHelper.IsValidTodoStatus(status.Value))
@@ -180,7 +181,14 @@ static void MapTodoRoute(WebApplication app)
         var genericResponse = await todoService.DeleteTodoByIdAsync(id);
         if (!genericResponse.Success)
         {
-            return Results.BadRequest(ErrorViewModelMapper.FromGenericResult(genericResponse));
+            if (genericResponse.ErrorCode == GeneralErrorCode.NotFound)
+            {
+                return Results.NotFound();
+            }
+            else
+            {
+                return Results.BadRequest(ErrorViewModelMapper.FromGenericResult(genericResponse));
+            }
         }
 
         return Results.StatusCode(StatusCodes.Status200OK);

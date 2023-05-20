@@ -1,7 +1,8 @@
 ﻿namespace JasonTodoCore.Entities;
 
 /// <summary>
-/// Filtering entity for ToDO
+/// Filtering entity for Todo list, todo list can be filter by name and by due date and by status 
+/// It is designed as object for further extensions
 /// </summary>
 public class Filtering
 {

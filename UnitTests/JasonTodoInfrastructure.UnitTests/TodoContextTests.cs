@@ -112,7 +112,7 @@ public class TodoContextTests : IDisposable
     {
         // Arrange
         var filtering = new Filtering { DueDate = new DateTime(2022, 12, 31) };
-        string sortByField = null;
+        string? sortByField = null;
 
         // Act
         using var context = CreateContext();
