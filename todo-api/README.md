@@ -27,7 +27,9 @@ dotnet ef database update
 - I didn't implement
 - I
 
-## 
+## Provision Database and maintaining database
+
+ dotnet ef database update --connection "Data Source=C:\\Users\\J-LHY\\AppData\\Local\\blogging2.db"
 
 ## Logging
 
@@ -39,6 +41,12 @@ dotnet ef database update
 // for json API
  - public required int Status { get; set; }
 - For missing field
+
+# Unit Test
+- 
+
+# Integration Test
+- It 
 
 # FilterBy, sortedBy
 

@@ -5,6 +5,7 @@ using JasonTodoCore.Entities;
 using JasonTodoInfrastructure;
 using JasonTodoInfrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddLogging();
-builder.Services.AddDbContext<TodoContext>();
+builder.Services.AddDbContext<TodoContext>(optionsBuilder =>
+{
+    var folder = Environment.SpecialFolder.LocalApplicationData;
+    var path = Environment.GetFolderPath(folder);
+    var dbPath = System.IO.Path.Join(path, "blogging.db");
+    optionsBuilder.UseSqlite($"Data Source={dbPath}");
+});
 builder.Services.AddTransient<ITodoService, TodoService>();
 
 var app = builder.Build();
@@ -76,7 +83,7 @@ static void MapTodoRoute(WebApplication app)
         return Results.Ok(todoItem);
     })
     .Produces<TodoItem>(StatusCodes.Status200OK)
-    .Produces<TodoItem>(StatusCodes.Status404NotFound)
+    .Produces(StatusCodes.Status404NotFound)
     .Produces(StatusCodes.Status500InternalServerError)
     .WithOpenApi(generatedOperation =>
     {
@@ -98,13 +105,14 @@ static void MapTodoRoute(WebApplication app)
         }
         else
         {
-            return Results.Created($"/todos/{todoEntity.Id}", todoCreateResult.Value.Id);
+            TodoItem todoItem = TodoItemMapper.FromTodoEntity(todoCreateResult.Value);
+            return Results.Created($"/todos/{todoEntity.Id}", todoItem);
         }
     })
-    .Produces<TodoItem>(StatusCodes.Status400BadRequest)
     .Produces<TodoItem>(StatusCodes.Status201Created)
+    .Produces(StatusCodes.Status400BadRequest)
     .Produces(StatusCodes.Status500InternalServerError)
-    .Accepts<CreateTodoViewModel>("application/json")
+    // .Accepts<CreateTodoViewModel>("application/json")
     .WithOpenApi(generatedOperation =>
     {
         generatedOperation.Summary = "Create todos";
@@ -124,8 +132,8 @@ static void MapTodoRoute(WebApplication app)
 
         return Results.StatusCode(StatusCodes.Status200OK);
     })
-    .Produces<TodoItem>(StatusCodes.Status404NotFound)
     .Produces<TodoItem>(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status404NotFound)
     .Produces(StatusCodes.Status500InternalServerError)
     .WithOpenApi(generatedOperation =>
     {

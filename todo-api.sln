@@ -5,13 +5,15 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JasonTodoAPI", "todo-api\JasonTodoAPI.csproj", "{2230138D-D653-4AB2-8718-AD5F6A13453C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasonTodoCore", "todo-api-core\JasonTodoCore.csproj", "{3B13046D-A8A5-4C94-BDA9-CCD863148DEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JasonTodoCore", "todo-api-core\JasonTodoCore.csproj", "{3B13046D-A8A5-4C94-BDA9-CCD863148DEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasonTodoInfrastructure", "JasonTodoInfrastructure\JasonTodoInfrastructure.csproj", "{BB0754A7-3777-4B1E-92B9-5120CA34AAF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JasonTodoInfrastructure", "JasonTodoInfrastructure\JasonTodoInfrastructure.csproj", "{BB0754A7-3777-4B1E-92B9-5120CA34AAF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasonTodoCoreTest", "JasonTodoCoreTest\JasonTodoCoreTest.csproj", "{DA892150-A0EB-44E1-B612-9AB97A907874}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JasonTodoCoreTest", "JasonTodoCoreTest\JasonTodoCoreTest.csproj", "{DA892150-A0EB-44E1-B612-9AB97A907874}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{D16AFD95-DD6B-485C-B281-03B0C6606DBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JasonTodoInfrastructureTest", "JasonTodoInfrastructureTest\JasonTodoInfrastructureTest.csproj", "{51AACA06-D912-4ECB-878B-D4574682CCDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +37,17 @@ Global
 		{DA892150-A0EB-44E1-B612-9AB97A907874}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA892150-A0EB-44E1-B612-9AB97A907874}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA892150-A0EB-44E1-B612-9AB97A907874}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51AACA06-D912-4ECB-878B-D4574682CCDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51AACA06-D912-4ECB-878B-D4574682CCDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51AACA06-D912-4ECB-878B-D4574682CCDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51AACA06-D912-4ECB-878B-D4574682CCDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DA892150-A0EB-44E1-B612-9AB97A907874} = {D16AFD95-DD6B-485C-B281-03B0C6606DBD}
+		{51AACA06-D912-4ECB-878B-D4574682CCDE} = {D16AFD95-DD6B-485C-B281-03B0C6606DBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AFE11E9-CBED-4A8C-B33E-5F4896968930}
