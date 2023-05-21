@@ -68,6 +68,8 @@ dotnet run JasonTodoApi
 
 ## API Design
 
+Following example show basic example of the API, for more detail, please see the integration test cases.
+
 ## Common design
 
 - Only json will be used request content and response content, not supporting XML
@@ -221,12 +223,16 @@ The application is designed to be 3 layer.
 - JasonTodoApi: The REST API end point for accepting the request, after accepting the HTTP request, it uses the library from JasonTodoCore and JasonTodoInfrastructure to handle the logic then response to user
 
 ### Design 
-
-- Main logic is handled in the service layer
+- Main logic is mainly handled in the service layer
 - I added some length constraint on the data
-- API -> Validation -> Service Layer
 - Infrastructure layer is for external resource such as database
 
+Workflow:
+
+1. Receive API
+2. RequestValidation (No db logic involved, purely computation)
+3. EntityValidation (More rule, some rule may be related to data size constraint)
+4. Service (do the actual work)
 
 ## Unit Testing
 
@@ -258,7 +264,7 @@ dotnet ef migrations add InitialCreate
  
 - I don't like to use AutoMapper, so I write the mapper myself, and write the test case ...
 - The TodoService implementation directly depends on Entity Framework context because I know it is easy to use SQLite and in-memory database with entity framework to test.
-I can put the TodoService in the Core but I have to abstract a repository pattern for providing the data. [See](aaa)
+I can put the TodoService in the Core but I have to abstract a repository pattern for providing the data. [Further Reading](https://learn.microsoft.com/en-us/ef/core/testing/choosing-a-testing-strategy#repository-pattern)
 - I don't like the provision and migration of database is included in the application logic, which may make it hard to test, so you need to run the command before running the application 
 - Because it is a demo project, I don't want to connect to external database due to Cost. I also hard code the path of the database. Ideally it should read from the IConfiguration (Although codespace can create database with docker compose now)
 
