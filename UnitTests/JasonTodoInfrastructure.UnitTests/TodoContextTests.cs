@@ -143,6 +143,24 @@ public class TodoContextTests : IDisposable
     }
 
     [Test]
+    public async Task GetTodoListAsync_WhenSortingByName_ReturnsSortedDescendingTodoList()
+    {
+        // Arrange
+        var filtering = new Filtering();
+        string sortByField = "name";
+        using var context = CreateContext();
+        var todoService = new TodoService(context, NullLogger<TodoService>.Instance);
+
+        // Act
+        var result = await todoService.GetTodoListAsync(filtering, sortByField, false);
+
+        // Assert
+        Assert.That(result.Count(), Is.EqualTo(4));
+        Assert.That(result.First().Name, Is.EqualTo("Task 4"));
+        Assert.That(result.Last().Name, Is.EqualTo("A Task 3"));
+    }
+
+    [Test]
     public async Task GetTodoListAsync_WhenSortingByStatus_ReturnsSortedTodoList()
     {
         // Arrange

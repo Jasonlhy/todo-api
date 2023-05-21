@@ -8,7 +8,6 @@ using JasonTodoInfrastructure;
 using JasonTodoInfrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,16 +42,14 @@ MapTodoRoute(app);
 
 app.Run();
 
-
-
 static void MapTodoRoute(WebApplication app)
 {
     // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/openapi?view=aspnetcore-7.0
     // GET: /todos
     app.MapGet("/todos", async ([FromServices] ITodoService todoService,
-        [FromQuery] DateTime? dueDate,
         [FromQuery] string? name,
         [FromQuery] int? status,
+        [FromQuery] DateTime? dueDate,
         [FromQuery] string? sortBy,
         [FromQuery] bool? sortAsc) =>
     {
@@ -91,9 +88,13 @@ static void MapTodoRoute(WebApplication app)
     {
         generatedOperation.Summary = "Get todo list";
         generatedOperation.Description = "Get todo list";
-        var parameter = generatedOperation.Parameters[0];
-        parameter.Description = "filter by";
-        parameter.Description = "sort by";
+
+        generatedOperation.Parameters[0].Description = "name to be filter by (exact match)";
+        generatedOperation.Parameters[1].Description = "status to be filter by (exact match)";
+        generatedOperation.Parameters[2].Description = "dueDate to be filter by (exact match)";
+        generatedOperation.Parameters[3].Description = "sortBy (name or status, status)";
+        generatedOperation.Parameters[3].Description = "sortAsc (true or false)";
+        
         return generatedOperation;
     });
 
@@ -149,8 +150,8 @@ static void MapTodoRoute(WebApplication app)
     // .Accepts<CreateTodoViewModel>("application/json")
     .WithOpenApi(generatedOperation =>
     {
-        generatedOperation.Summary = "Create todos";
-        generatedOperation.Description = "Create todos";
+        generatedOperation.Summary = "Create todo";
+        generatedOperation.Description = "Create todo";
         return generatedOperation;
     });
 
@@ -177,8 +178,8 @@ static void MapTodoRoute(WebApplication app)
     .Produces(StatusCodes.Status500InternalServerError)
     .WithOpenApi(generatedOperation =>
     {
-        generatedOperation.Summary = "Update todos with id";
-        generatedOperation.Description = "Update todos with id";
+        generatedOperation.Summary = "Update todo with id";
+        generatedOperation.Description = "Update todo with id";
         var parameter = generatedOperation.Parameters[0];
         parameter.Description = "JSON for updating the todo";
         return generatedOperation;
@@ -204,8 +205,8 @@ static void MapTodoRoute(WebApplication app)
     })
     .WithOpenApi(generatedOperation =>
     {
-        generatedOperation.Summary = "Delete todos with id";
-        generatedOperation.Description = "Delete todos with id";
+        generatedOperation.Summary = "Delete todo with id";
+        generatedOperation.Description = "Delete todo with id";
         var parameter = generatedOperation.Parameters[0];
         parameter.Description = "id for the todo to be deleted";
         return generatedOperation;

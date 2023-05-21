@@ -44,22 +44,29 @@ public class TodoService : ITodoService
         // Order by 
         if (!string.IsNullOrEmpty(sortByField))
         {
+            if (!SortingHelper.IsSupportedSortingField(sortByField))
+            {
+                throw new InvalidSortingFieldException(sortByField);
+            }
+
             // todo
             if (sortByField == "name")
             {
-                todos = (sortAscending) ? todos.OrderBy(t => t.Name) : todos.OrderByDescending(t => t.Name);
+                todos = todos.OrderBy(t => t.Name);
             }
             else if (sortByField == "stats")
             {
-                todos = (sortAscending) ? todos.OrderBy(t => t.Status) : todos.OrderByDescending(t => t.Status);
+                todos = todos.OrderBy(t => t.Status);
             }
             else if (sortByField == "dueDate")
             {
-                todos = (sortAscending) ? todos.OrderBy(t => t.DueDate) : todos.OrderByDescending(t => t.DueDate);
+                todos = todos.OrderBy(t => t.DueDate);
             }
-            else
-            {
-                throw new InvalidSortingFieldException(sortByField);
+
+            // Save my time to write the test case of each field desc otherwise you have to write OrderbyDescending and test case for each combination
+            // Note: May impact performance (?)
+            if (!sortAscending) {
+                todos = todos.Reverse();
             }
         }
 
