@@ -1,8 +1,12 @@
 ﻿# Todo API
 
-Simple Todo API, with unit testing with Sqlite in Memory, integration testing with Sqlite in Memory. It also have basic CI in the github Action.
+Simple Todo REST API implemented with minimal API
+- Swagger support
+- Unit testing with Sqlite in Memory
+- Integration testing with Sqlite in Memory. 
+- Basic CI in the github Action.
 
-## Tech Stack and development tool
+## Tech stack and development tool
 
 - .NET 7
 - Visual Studio
@@ -16,36 +20,25 @@ Simple Todo API, with unit testing with Sqlite in Memory, integration testing wi
 - For development and production, the database is using `todo.db` inside `$ENV:LOCALAPPDATA`
 - For unit testing, integration testing, the database is using SQLite in memory
 
-## Getting Started for development
+## Getting started for development
 
-The easiest way to try the project is to clone into the namespace
+.NET 7 is cross platform so you can run on Winodws, Mac and Linux, and even Github Codespace
 
-After running the server, you can access following URL
+### Install required tool and clone the repo
 
-- https://localhost:7124/swagger/index.html
-- http://localhost:5162/swagger/index.html
-
-**For testing**
-
-- `dotnet test` will run all tests in the solution
-- `dotnet test UnitTests/JasonTodoCore.UnitTest` will run JasonTodoCore.UnitTest
-
-### Windows
-
-Install git
+- [Download git](https://git-scm.com/)
+- [Download Dotnet SDK for .NET7](https://dotnet.microsoft.com/en-us/download)
 
 ```
-winget install --id git
 git clone https://github.com/Jasonlhy/todo-api.git
+cd todo-api
 ```
 
-[Download Visual Studio 2022](https://visualstudio.microsoft.com/vs/) then open the solution
+### Provision database for development
 
-[Download Visual Studio code and install C# extensions](https://code.visualstudio.com/docs/languages/csharp) and open the folder
+You can provision the database either with command or when application starts
 
-[Download Dotnet SDK for .NET7](https://dotnet.microsoft.com/en-us/download)
-
-**Provision database for development**
+**Provision the database with command**
 
 Run following in powershell, it will generate the `todo.db` inside `$ENV:LOCALAPPDATA`
 
@@ -54,18 +47,42 @@ dotnet tool install --global dotnet-ef
 dotnet ef database update -p ./JasonTodoInfrastructure -s ./JasonTodoApi
 ```
 
-### Linux
+**Provision the database when application start**
+
+Uncomment following code when you are
 
 ```
-apt-get update && apt-get install git
-git clone https://github.com/Jasonlhy/todo-api.git
+// Provision the database in case if you need to do in application start ... 
+//using (var scope = app.Services.CreateScope())
+//{
+//    var provider = scope.ServiceProvider;
+//    using var todoContext = provider.GetRequiredService<TodoContext>();
+//    todoContext.Database.EnsureCreated();
+//}
 ```
 
-Follow instruction [here](https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#im-using-ubuntu-2210-or-2304-and-i-only-need-net-60-or-net-70) to download .NET 7 SDK
+### Running with Visual Studio
 
-### Github
+1. [Download Visual Studio 2022](https://visualstudio.microsoft.com/vs/) with C# component
+2. Open the solution in Visual Studio 2022
+3. Set JasonTodoApi as startup project, press the run button
 
-It is the easiest way to test the project, open this project in the the codespaces
+### Running with Visual Studio Code
+
+1. [Download Visual Studio code and install C# extensions](https://code.visualstudio.com/docs/languages/csharp)
+2. Open the folder and run debug
+
+### Running with dotnet cli
+
+1. Use any editor you like
+2. `dotnet run JasonTodoApi`
+
+- https://localhost:7124/swagger/index.html
+- http://localhost:5162/swagger/index.html
+
+### Running on Github Codespace
+
+It is the easiest way to test the project, just open the project in Github codespace, the codespace will have dotnet cli installed and will provision the database, so you can run following command, the set up is defined inside `.devcontainer`
 
 ```bash
 dotnet run JasonTodoApi
@@ -73,13 +90,11 @@ dotnet run JasonTodoApi
 
 ## API Design
 
-Following example show basic example of the API, for more detail, please see the integration test cases.
-
 ## Common design
 
-- Only json will be used request content and response content, not supporting XML
+- Only json will be used request content and response content, it will not supporting XML
 - status is passed as integer instead of string, 0 for non started, 1 for in progress, 2 for completed
-- dueDate inside request and response JSON is in ISO 8601 format
+- dueDate inside request and response JSON is in ISO 8601 format, e.g. `2023-05-19T23:31:35.436Z`
 
 For common error validation error, it will return 400 and in following structure
 
@@ -94,17 +109,25 @@ For common error validation error, it will return 400 and in following structure
 
 ### Get todo list with filtering and sorting
 
-GET /todos?[dueDate=2023-05-21T13%3A00%3A00.0000000][&name=22][&status=1][&sortBy=name]
+Route: `GET /todos?[dueDate=2023-05-21T13%3A00%3A00.0000000][&name=22][&status=1][&sortBy=name][&sortAsec=true]`
 
-Return a list of todo item, can be filtered by name,status,dueDate, filtering is done by exact match. The list can be sorted by a column, either ascending or descending
+Return a list of todo item
+- Can be filtered by name,status,dueDate, filtering is done by exact match
+- Can be sorted by a column, either ascending or descending
 
 Optional parameter in query string:
-- dueDate in ISO DateString format
-- name: either
+- dueDate: for filtering, must be in in ISO DateString format
+- name: for filtering
+- status: for filtering
 - status: 0 for non started, 1 for in progress, 2 for completed
-- sortBy: possible values: name, dueDate, stats
+- sortBy: sort by which field, values: name, dueDate, stats
+- sortAsc: is sorted ascending or descending, values: true or false
 
 Example request:
+
+`GET /todos`
+
+Example response:
 
 ```json
 [
@@ -118,7 +141,7 @@ Example request:
   },
   {
     "id": 4,
-    "name": "string",
+    "name": "string2",
     "description ": "string",
     "dueDate": "2023-05-19T23:31:35.436",
     "status": 0,
@@ -127,11 +150,34 @@ Example request:
 ]
 ```
 
+Example request with filtering by name:
+
+`GET /todos?name=string`
+
+Example response with filtering by name:
+
+```json
+[
+  {
+    "id": 2,
+    "name": "string",
+    "description ": "string",
+    "dueDate": "2023-05-19T23:26:24.058",
+    "status": 0,
+    "statusString": "Not Started"
+  }
+]
+```
+
 ### Get todo details
 
-GET /todos/2
+Get todo detail of a given todo id
+
+Route: `GET /todos/{id}`
 
 Example response:
+
+`GET /todos/2`
 
 ```json
 [
@@ -148,18 +194,17 @@ Example response:
 
 ### Create todo
 
-POST /todos
-
-POST JSON with the information of the todo item to be created, it will return the new created todo item in JSON
+Create todo item, it will return the new created todo item in JSON
 
 Example request:
+
+`POST /todos`
 
 ```json
 {
   "name": "string",
   "description": "string",
-  "dueDate": "2023-05-20T22:00:29.787Z",
-  "status": 0
+  "dueDate": "2023-05-20T22:00:29.787Z"
 }
 ```
 
@@ -180,11 +225,14 @@ Status Code: 201
 
 ### Update todo
 
-PUT /todos/1
+Update the todo with given Id
 
-```response
+Example request:
+
+`PUT /todos/1`
+
+```json
 {
-  "id": 22,
   "name": "string",
   "description ": "string",
   "dueDate": "2023-05-21T13:00:00Z",
@@ -194,8 +242,8 @@ PUT /todos/1
 
 Example response:
 
-Status Code: 200
-Content body: None
+- Status Code: 200
+- Content body: None
 
 ### Delete todo
 
@@ -203,31 +251,32 @@ Given a todo id, delete the todo item.
 
 Example request:
 
-DELETE /todos/1
+`DELETE /todos/1`
 
 Example response: 
 
-Status Code: 200
-Content body: None
+- Status Code: 200
+- Content body: None
 
 Example request 2  (Non existing Id)
 
-DELETE /todos/9999
+`DELETE /todos/9999`
 
 Example response 2:
 
-Status Code: 404
-Content body: None
+- Status Code: 404
+- Content body: None
 
 ## Application Design
 
-The application is designed to be 3 layer. 
+The application consists of 3 layers
 
 - JasonTodoCore: Main application logic, this mainly for POCO, high level interface such as TodoService, constant, validation rule, it doesn't have dependency except BCL
 - JasonTodoInfrastructure: Data Access Layer, and the implementation of TodoService, it depends on JasonTodoCore
 - JasonTodoApi: The REST API end point for accepting the request, after accepting the HTTP request, it uses the library from JasonTodoCore and JasonTodoInfrastructure to handle the logic then response to user
 
 ### Design 
+
 - Main logic is mainly handled in the service layer
 - I added some length constraint on the data
 - Infrastructure layer is for external resource such as database
@@ -281,3 +330,5 @@ I can put the TodoService in the Core but I have to abstract a repository patter
 - CD to some app service
 - Separate Validation Code with General Error code
 - Thinks about to avoid duplicated logic on IsSupportedSortingField
+- Logging
+- Better global exception handling
