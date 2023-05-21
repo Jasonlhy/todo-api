@@ -36,7 +36,7 @@ cd todo-api
 
 ### Provision database for development
 
-You can provision the database either with command or when application starts
+This application request a database, you can provision the database either with command or when application starts
 
 **Provision the database with command**
 
@@ -49,7 +49,7 @@ dotnet ef database update -p ./JasonTodoInfrastructure -s ./JasonTodoApi
 
 **Provision the database when application start**
 
-Uncomment following code when you are
+Uncomment following code
 
 ```
 // Provision the database in case if you need to do in application start ... 
@@ -227,6 +227,8 @@ Status Code: 201
 
 Update the todo with given Id
 
+Route: `PUT /todos/{id}`
+
 Example request:
 
 `PUT /todos/1`
@@ -248,6 +250,8 @@ Example response:
 ### Delete todo
 
 Given a todo id, delete the todo item.
+
+Route: `DELETE /todos/{id}`
 
 Example request:
 
@@ -275,28 +279,38 @@ The application consists of 3 layers
 - JasonTodoInfrastructure: Data Access Layer, and the implementation of TodoService, it depends on JasonTodoCore
 - JasonTodoApi: The REST API end point for accepting the request, after accepting the HTTP request, it uses the library from JasonTodoCore and JasonTodoInfrastructure to handle the logic then response to user
 
-### Design 
 
-- Main logic is mainly handled in the service layer
-- I added some length constraint on the data
-- Infrastructure layer is for external resource such as database
+![High-Level-Design](docs/high-level.svg)
+
+Idea:
+
+- Main logic is handled in the JasonTodoCore, and TodoService 
+- Infrastructure layer is for external resource such as database, data access layer heavily depends on EntityFrameworkCore so I don't need to write the SQL for dynamic filtering and sorting
+- I added some length constraint on the data so there are extra code in core for checking those constraints
 
 Workflow:
 
-1. Receive API
+JasonTodoApi will set the dependency injection of ITodoService, and the TodoContext
+
+1. Handle REST API in JasonTodoApi
 2. RequestValidation (No db logic involved, purely computation)
 3. EntityValidation (More rule, some rule may be related to data size constraint)
-4. Service (do the actual work)
+4. Call ITodoService to do the actual work
+5. Return the return 
 
 ## Unit Testing
 
-- JasonTodoCore: Test the mapper, validation logic
-- JasonTodoInfrastructure: Test the implementation of IGEService, the unit test is running with SQLite in memory, the data is isolated between each test case
-- JasonTodoApi: Test the mapper
+- JasonTodoCore.UnitTest: Test the mapper, validation logic
+- JasonTodoInfrastructure.UnitTest: Test the implementation of IGEService, the unit test is running with SQLite in memory, the data is isolated between each test case
+- JasonTodoApi.UnitTest: Test the mapper
 
 ## Integration Testing
 
-REST API integration testing, it will start up a test server, and then make REST API call to the server and assert the result such as response body and status code
+REST API integration testing
+
+1. It will start up a test server
+2. REST API call to the server 
+3. Assert the result such as response body and status code
 
 ## Entity Framework Core migration
 
