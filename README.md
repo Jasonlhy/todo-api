@@ -36,7 +36,7 @@ cd todo-api
 
 ### Provision database for development
 
-This application request a database, you can provision the database either with command or when application starts
+This application needs a database, you can provision the database either with command or when application starts
 
 **Provision the database with command**
 
@@ -90,7 +90,7 @@ dotnet run JasonTodoApi
 
 ## API Design
 
-Following show the basic example of the todo api, for details please check the integration testing.
+Following show the basic examples of the todo api, for details please check the integration testing.
 
 ## Common design
 
@@ -325,6 +325,7 @@ dotnet ef migrations add InitialCreate
 ```
 
 ## Common Pattern in code
+
 - Nullable reference
 - use const instead of enum for status
 - ViewModel will be defined as record
