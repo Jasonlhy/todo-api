@@ -6,8 +6,10 @@ using JasonTodoCore.Entities;
 using JasonTodoCore.Validators;
 using JasonTodoInfrastructure;
 using JasonTodoInfrastructure.Data;
+using JasonTodoInfrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,14 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+
+// Provision the database in case if you need to do in application start ... 
+//using (var scope = app.Services.CreateScope())
+//{
+//    var provider = scope.ServiceProvider;
+//    using var todoContext = provider.GetRequiredService<TodoContext>();
+//    todoContext.Database.EnsureCreated();
+//}
 
 MapTodoRoute(app);
 
