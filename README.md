@@ -90,6 +90,8 @@ dotnet run JasonTodoApi
 
 ## API Design
 
+Following show the basic example of the todo api, for details please check the integration testing.
+
 ## Common design
 
 - Only json will be used request content and response content, it will not supporting XML
