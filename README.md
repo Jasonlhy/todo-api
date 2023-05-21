@@ -25,6 +25,11 @@ After running the server, you can access following URL
 - https://localhost:7124/swagger/index.html
 - http://localhost:5162/swagger/index.html
 
+**For testing**
+
+- `dotnet test` will run all tests in the solution
+- `dotnet test UnitTests/JasonTodoCore.UnitTest` will run JasonTodoCore.UnitTest
+
 ### Windows
 
 Install git
@@ -60,7 +65,7 @@ Follow instruction [here](https://learn.microsoft.com/en-us/dotnet/core/install/
 
 ### Github
 
-It is the easiest way to test the project, clone the project into the codespaces
+It is the easiest way to test the project, open this project in the the codespaces
 
 ```bash
 dotnet run JasonTodoApi
