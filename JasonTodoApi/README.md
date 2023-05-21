@@ -7,7 +7,7 @@ Simple Todo API, with unit testing with Sqlite in Memory, integration testing wi
 - .NET 7
 - Visual Studio
 - Visual Studio Code
-- dotnet cli
+- dotnet cli for .NET 7.0
 - git
 - SQLite
 
@@ -20,6 +20,8 @@ Simple Todo API, with unit testing with Sqlite in Memory, integration testing wi
 
 The easiest way to try the project is to clone into the namespace
 
+After running the server, you can access following URL
+
 - https://localhost:7124/swagger/index.html
 - http://localhost:5162/swagger/index.html
 
@@ -29,11 +31,14 @@ Install git
 
 ```
 winget install --id git
+git clone https://github.com/Jasonlhy/todo-api.git
 ```
 
 [Download Visual Studio 2022](https://visualstudio.microsoft.com/vs/) then open the solution
 
 [Download Visual Studio code and install C# extensions](https://code.visualstudio.com/docs/languages/csharp) and open the folder
+
+[Download Dotnet SDK for .NET7](https://dotnet.microsoft.com/en-us/download)
 
 **Provision database for development**
 
@@ -47,8 +52,11 @@ dotnet ef database update -p ./JasonTodoInfrastructure -s ./JasonTodoApi
 ### Linux
 
 ```
-apt-get install git
+apt-get update && apt-get install git
+git clone https://github.com/Jasonlhy/todo-api.git
 ```
+
+Follow instruction [here](https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#im-using-ubuntu-2210-or-2304-and-i-only-need-net-60-or-net-70) to download .NET 7 SDK
 
 ### Github
 
