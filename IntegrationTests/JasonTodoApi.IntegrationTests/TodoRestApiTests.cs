@@ -57,7 +57,7 @@ namespace JasonTodoApi.IntegrationTests
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
             var errorViewModel = System.Text.Json.JsonSerializer.Deserialize<ErrorViewModel>(response.Content.ReadAsStream());
             Assert.That(errorViewModel, Is.Not.Null);
-            Assert.That(errorViewModel.ErrorCode, Is.EqualTo(GeneralErrorCode.InvalidStatus));
+            Assert.That(errorViewModel.ErrorCode, Is.EqualTo(GeneralErrorCode.RequestValidationFailed));
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace JasonTodoApi.IntegrationTests
         public async Task GetTodoList_WithSortBy_NotSupportField()
         {
             var response = await httpClient.GetAsync("/todos?sortBy=notsupportfield");
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
         [Test]

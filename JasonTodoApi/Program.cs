@@ -56,13 +56,22 @@ static void MapTodoRoute(WebApplication app)
         [FromQuery] string? sortBy,
         [FromQuery] bool? sortAsc) =>
     {
-        // This fields is kind of .... 
+        // validation
         if (status.HasValue && !TodoStatusHelper.IsValidTodoStatus(status.Value))
         {
             return Results.BadRequest(new ErrorViewModel()
             {
-                ErrorCode = GeneralErrorCode.InvalidStatus,
+                ErrorCode = GeneralErrorCode.RequestValidationFailed,
                 ErrorMessages = new string[] { $"{status} is not valid status" }
+            });
+        }
+
+        if (!string.IsNullOrEmpty(sortBy) && !SortingHelper.IsSupportedSortingField(sortBy))
+        {
+            return Results.BadRequest(new ErrorViewModel()
+            {
+                ErrorCode = GeneralErrorCode.RequestValidationFailed,
+                ErrorMessages = new string[] { $"{sortBy} is not an supporting sorting field" }
             });
         }
 

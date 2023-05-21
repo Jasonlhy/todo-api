@@ -268,3 +268,5 @@ I can put the TodoService in the Core but I have to abstract a repository patter
 - Perhaps using JSON for integration testing
 - Standalone program for testing the performance such as JMeteter and K6
 - CD to some app service
+- Separate Validation Code with General Error code
+- Thinks about to avoid duplicated logic on IsSupportedSortingField

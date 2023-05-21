@@ -14,7 +14,7 @@ public class ErrorViewModelMapperTests
         // Arrange
         var genericResult = new GenericResult
         {
-            ErrorCode = GeneralErrorCode.InvalidStatus,
+            ErrorCode = GeneralErrorCode.RequestValidationFailed,
             ErrorMessage = "-1 is not a valid status"
         };
 
