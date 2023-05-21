@@ -13,7 +13,6 @@ public class CreateUpdateViewModelMapperTests
             Name = "Test Todo",
             Description = "This is a test todo",
             DueDate = new DateTime(2022, 1, 1),
-            Status = 0
         };
 
         // Act
@@ -26,7 +25,7 @@ public class CreateUpdateViewModelMapperTests
             Assert.That(result.Name, Is.EqualTo(createTodoViewModel.Name));
             Assert.That(result.Description, Is.EqualTo(createTodoViewModel.Description));
             Assert.That(result.DueDate, Is.EqualTo(createTodoViewModel.DueDate));
-            Assert.That(result.Status, Is.EqualTo(createTodoViewModel.Status));
+            Assert.That(result.Status, Is.EqualTo(0));
         });
     }
 

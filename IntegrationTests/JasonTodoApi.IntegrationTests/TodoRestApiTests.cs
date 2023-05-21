@@ -4,7 +4,6 @@ using JasonTodoCore.Entities;
 using JasonTodoInfrastructure.Data;
 using JasonTodoInfrastructure.Data.Models;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework.Interfaces;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -33,6 +32,7 @@ namespace JasonTodoApi.IntegrationTests
                 using var todoContext = provider.GetRequiredService<TodoContext>();
                 todoContext.Database.EnsureCreated();
 
+                // Seed records with 4 data
                 todoContext.AddRange(
                     new Todo { Id = 1, Name = "Task 1", Description = "Task 1 desc", DueDate = new DateTime(2022, 12, 31), Status = TodoStatus.NOT_STARTED },
                     new Todo { Id = 2, Name = "Task 2", Description = "Task 2 desc", DueDate = new DateTime(2023, 1, 1), Status = TodoStatus.IN_PROGRESS },
@@ -41,7 +41,6 @@ namespace JasonTodoApi.IntegrationTests
                 );
 
                 todoContext.SaveChanges();
-                // var lists = todoContext.Todos.ToList();
             }
 
             httpClient = jasonTodoApplication.CreateClient();
@@ -84,6 +83,7 @@ namespace JasonTodoApi.IntegrationTests
         public async Task GetTodoList_WithSortBy()
         {
             var todoList = await httpClient.GetFromJsonAsync<IEnumerable<TodoItem>>("/todos?sortBy=name");
+            Assert.That(todoList, Is.Not.Null);
             Assert.That(todoList.Count(), Is.EqualTo(4));
 
             // TodoItem is a record, so it can also be compared with values...
@@ -132,7 +132,6 @@ namespace JasonTodoApi.IntegrationTests
             {
                 Name = "API Name",
                 Description = "API Description",
-                Status = 0,
                 DueDate = new DateTime(2023, 5, 21),
             });
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created));

@@ -10,13 +10,14 @@ public static class CreateUpdateViewModelMapper
 {
     public static TodoEntity ToTodoEntity(CreateTodoViewModel createTodoViewModel)
     {
-        // Id is automatically created 
+        // Id is automatically created
+        // It is set to not started by default
         return new TodoEntity
         {
             Name = createTodoViewModel.Name,
             Description = createTodoViewModel.Description,
             DueDate = createTodoViewModel.DueDate,
-            Status = createTodoViewModel.Status,
+            Status = TodoStatus.NOT_STARTED,
         };
     }
 

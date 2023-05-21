@@ -12,12 +12,12 @@ namespace JasonTodoApi.IntegrationTests;
 
 internal class JasonTodoApplication : WebApplicationFactory<Program>
 {
-    private DbConnection _connection;
-    private DbContextOptions<TodoContext> _contextOptions;
+    private DbConnection? _connection;
+    private DbContextOptions<TodoContext>? _contextOptions;
 
     public new void Dispose() {
         base.Dispose();
-        _connection.Dispose();
+        _connection?.Dispose();
     }
 
     protected override IHost CreateHost(IHostBuilder builder)

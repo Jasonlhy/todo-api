@@ -15,7 +15,4 @@ public record CreateTodoViewModel
 
     [JsonPropertyName("dueDate")]
     public DateTime DueDate { get; set; }
-
-    [JsonPropertyName("status")]
-    public required int Status { get; set; }
 }
