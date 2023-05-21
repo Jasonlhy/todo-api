@@ -2,7 +2,7 @@
 
 public class InvalidSortingFieldException : Exception
 {
-    public InvalidSortingFieldException(string fieldName) 
+    public InvalidSortingFieldException(string fieldName) : base($"{fieldName} cannot be sorted") 
     {
         
     }

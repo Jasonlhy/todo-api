@@ -23,7 +23,7 @@ builder.Services.AddDbContext<TodoContext>(optionsBuilder =>
 {
     var folder = Environment.SpecialFolder.LocalApplicationData;
     var path = Environment.GetFolderPath(folder);
-    var dbPath = System.IO.Path.Join(path, "blogging.db");
+    var dbPath = System.IO.Path.Join(path, "todo.db");
     optionsBuilder.UseSqlite($"Data Source={dbPath}");
 });
 builder.Services.AddTransient<ITodoService, TodoService>();
@@ -54,7 +54,7 @@ static void MapTodoRoute(WebApplication app)
         [FromQuery] string? name,
         [FromQuery] int? status,
         [FromQuery] string? sortBy,
-        [FromQuery] bool? sortAscending) =>
+        [FromQuery] bool? sortAsc) =>
     {
         // This fields is kind of .... 
         if (status.HasValue && !TodoStatusHelper.IsValidTodoStatus(status.Value))
@@ -71,7 +71,7 @@ static void MapTodoRoute(WebApplication app)
             Name = name,
             DueDate = dueDate,
             Status = status,
-        }, sortBy);
+        }, sortBy, sortAsc ?? true);
         var todoItemList = TodoItemMapper.FromTodoEntityList(todoLists);
 
         return Results.Ok(todoItemList);

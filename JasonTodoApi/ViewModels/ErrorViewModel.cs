@@ -7,6 +7,6 @@ public record ErrorViewModel
     [JsonPropertyName("errorCode")]
     public int? ErrorCode { get; set; }
 
-    [JsonPropertyName("errorMessage")]
+    [JsonPropertyName("errorMessages")]
     public IEnumerable<string> ErrorMessages { get; set; } = Enumerable.Empty<string>();
 }

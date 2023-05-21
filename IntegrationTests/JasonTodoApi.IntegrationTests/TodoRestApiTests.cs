@@ -4,6 +4,7 @@ using JasonTodoCore.Entities;
 using JasonTodoInfrastructure.Data;
 using JasonTodoInfrastructure.Data.Models;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework.Interfaces;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -50,11 +51,13 @@ namespace JasonTodoApi.IntegrationTests
         public async Task GetTodoList()
         {
             var todoList = await httpClient.GetFromJsonAsync<IEnumerable<TodoItem>>("/todos");
+            Assert.That(todoList, Is.Not.Null);
             Assert.That(todoList.Count(), Is.EqualTo(4));
 
             var response = await httpClient.GetAsync("/todos?status=999");
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
             var errorViewModel = System.Text.Json.JsonSerializer.Deserialize<ErrorViewModel>(response.Content.ReadAsStream());
+            Assert.That(errorViewModel, Is.Not.Null);
             Assert.That(errorViewModel.ErrorCode, Is.EqualTo(GeneralErrorCode.InvalidStatus));
         }
 
@@ -62,6 +65,7 @@ namespace JasonTodoApi.IntegrationTests
         public async Task GetTodoList_WithFilter()
         {
             var todoList = await httpClient.GetFromJsonAsync<IEnumerable<TodoItem>>("/todos?name=Task 4");
+            Assert.That(todoList, Is.Not.Null);
             Assert.That(todoList.Count(), Is.EqualTo(1));
 
             // TodoItem is a record, so it can also be compared with values...
@@ -105,13 +109,11 @@ namespace JasonTodoApi.IntegrationTests
         public async Task GetTodo3_Ok()
         {
             var todoItem = await httpClient.GetFromJsonAsync<TodoItem>("/todos/3");
-            Assert.Multiple(() =>
-            {
-                Assert.That(todoItem.Id, Is.EqualTo(3));
-                Assert.That(todoItem.Name, Is.EqualTo("A Task 3"));
-                Assert.That(todoItem.Description, Is.EqualTo("Task 3 desc"));
-                Assert.That(todoItem.Status, Is.EqualTo(TodoStatus.COMPLETED));
-            });
+            Assert.That(todoItem, Is.Not.Null);
+            Assert.That(todoItem.Id, Is.EqualTo(3));
+            Assert.That(todoItem.Name, Is.EqualTo("A Task 3"));
+            Assert.That(todoItem.Description, Is.EqualTo("Task 3 desc"));
+            Assert.That(todoItem.Status, Is.EqualTo(TodoStatus.COMPLETED));
         }
 
         [Test]
@@ -137,6 +139,8 @@ namespace JasonTodoApi.IntegrationTests
 
             // Happy path will return the created todo item
             var createdTodoItem = System.Text.Json.JsonSerializer.Deserialize<TodoItem>(response.Content.ReadAsStream());
+            Assert.That(createdTodoItem, Is.Not.Null);
+
             Assert.That(createdTodoItem.Id, Is.EqualTo(5));
             Assert.That(createdTodoItem.Name, Is.EqualTo("API Name"));
             Assert.That(createdTodoItem.Status, Is.EqualTo(0));
@@ -181,7 +185,7 @@ namespace JasonTodoApi.IntegrationTests
                 Description = "New API Description",
                 Status = 1,
                 DueDate = new DateTime(2023, 5, 1),
-            });
+            }); 
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
         }
 
@@ -193,7 +197,7 @@ namespace JasonTodoApi.IntegrationTests
 
             // Find the todo item agian
             var todoList = await httpClient.GetFromJsonAsync<IEnumerable<TodoItem>>("/todos");
-            Assert.That(todoList.Count(), Is.EqualTo(3));
+            Assert.That(todoList!.Count(), Is.EqualTo(3));
         }
 
         [Test]

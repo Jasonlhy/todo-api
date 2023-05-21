@@ -10,11 +10,11 @@ namespace JasonTodoCore;
 public interface ITodoService
 {
     /// <summary>
-    /// Get todolist 
+    /// Get todolist with filtering and sorting
     /// </summary>
     /// <param name="filtering">Filtering object</param>
     /// <param name="sortByField">Sort by field value</param>
-    /// <param name="sortAscending">Sort by ascending? which is default</param>
+    /// <param name="sortAscending">Sort by ascending? which is default true</param>
     /// <returns></returns>
     Task<IEnumerable<TodoEntity>> GetTodoListAsync(Filtering filtering, string? sortByField, bool sortAscending = true);
 
