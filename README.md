@@ -298,7 +298,7 @@ JasonTodoApi will set the dependency injection of ITodoService, and the TodoCont
 2. RequestValidation (No db logic involved, purely computation)
 3. EntityValidation (More rule, some rule may be related to data size constraint)
 4. Call ITodoService to do the actual work
-5. Return the return 
+5. Return the result to client
 
 ## Unit Testing
 
